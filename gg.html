@@ -26,38 +26,13 @@
   <canvas id="signatureCanvas" width="400" height="200"></canvas>
   <button id="btnClear">清除簽名</button>
 
+  <script src="https://unpkg.com/signature_pad"></script>
   <script>
     const canvas = document.getElementById('signatureCanvas');
-    const ctx = canvas.getContext('2d');
-    let isDrawing = false;
-
-    function startPosition(e) {
-      isDrawing = true;
-      const rect = canvas.getBoundingClientRect();
-      const x = e.touches[0].clientX - rect.left;
-      const y = e.touches[0].clientY - rect.top;
-      ctx.moveTo(x, y);
-    }
-
-    function endPosition() {
-      isDrawing = false;
-    }
-
-    function draw(e) {
-      if (!isDrawing) return;
-      const rect = canvas.getBoundingClientRect();
-      const x = e.touches[0].clientX - rect.left;
-      const y = e.touches[0].clientY - rect.top;
-      ctx.lineTo(x, y);
-      ctx.stroke();
-    }
-
-    canvas.addEventListener('touchstart', startPosition);
-    canvas.addEventListener('touchend', endPosition);
-    canvas.addEventListener('touchmove', draw);
+    const signaturePad = new SignaturePad(canvas);
 
     document.getElementById('btnClear').addEventListener('click', () => {
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      signaturePad.clear();
     });
   </script>
 </body>
