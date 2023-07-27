@@ -19,20 +19,62 @@
       border: none;
       cursor: pointer;
     }
+    #btnOpenSignature {
+      margin-top: 10px;
+      padding: 6px 12px;
+      background-color: #00f;
+      color: #fff;
+      border: none;
+      cursor: pointer;
+    }
+    #signatureDialog {
+      display: none;
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      border: 1px solid #ccc;
+      padding: 10px;
+      background-color: #fff;
+    }
+    #signatureDialog canvas {
+      width: 200px;
+      height: 100px;
+    }
   </style>
 </head>
 <body>
   <h2>手繪簽名</h2>
   <canvas id="signatureCanvas" width="400" height="200"></canvas>
   <button id="btnClear">清除簽名</button>
+  <button id="btnOpenSignature">開啟手繪簽名</button>
+
+  <div id="signatureDialog">
+    <canvas id="signatureDialogCanvas" width="200" height="100"></canvas>
+    <button id="btnConfirmSignature">確定</button>
+  </div>
 
   <script src="https://unpkg.com/signature_pad"></script>
   <script>
     const canvas = document.getElementById('signatureCanvas');
     const signaturePad = new SignaturePad(canvas);
 
+    const signatureDialogCanvas = document.getElementById('signatureDialogCanvas');
+    const signatureDialogPad = new SignaturePad(signatureDialogCanvas);
+
     document.getElementById('btnClear').addEventListener('click', () => {
       signaturePad.clear();
+    });
+
+    document.getElementById('btnOpenSignature').addEventListener('click', () => {
+      // 在按下開啟手繪簽名按鈕後，顯示手繪簽名視窗
+      document.getElementById('signatureDialog').style.display = 'block';
+    });
+
+    document.getElementById('btnConfirmSignature').addEventListener('click', () => {
+      // 在按下確定按鈕後，將手繪簽名複製到主要簽名區域並關閉手繪簽名視窗
+      signaturePad.fromData(signatureDialogPad.toData());
+      document.getElementById('signatureDialog').style.display = 'none';
     });
   </script>
 </body>
